@@ -18,30 +18,33 @@ bool isUserExists(string username) {
 void signUp() {
     string username, password, confirmPassword;
 
-    cout << "\n===== SIGN UP =====\n";
-    cout << "Username: ";
-    cin >> username;
+    while (true) {
+        cout << "\n===== SIGN UP =====\n";
+        cout << "Username: ";
+        cin >> username;
 
-    if (isUserExists(username)) {
-        cout << "❌ Username นี้มีอยู่แล้ว! ลองใหม่\n";
+        if (isUserExists(username)) {
+            cout << "❌ Username นี้มีอยู่แล้ว! ลองใหม่\n";
+            continue;
+        }
+
+        cout << "Password: ";
+        cin >> password;
+        cout << "Confirm Password: ";
+        cin >> confirmPassword;
+
+        if (password != confirmPassword) {
+            cout << "❌ รหัสผ่านไม่ตรงกัน! ลองใหม่\n";
+            continue;
+        }
+
+        ofstream file("users.txt", ios::app);
+        file << username << " " << password << endl;
+        file.close();
+
+        cout << "✅ สมัครสมาชิกสำเร็จ!\n";
         return;
     }
-
-    cout << "Password: ";
-    cin >> password;
-    cout << "Confirm Password: ";
-    cin >> confirmPassword;
-
-    if (password != confirmPassword) {
-        cout << "❌ รหัสผ่านไม่ตรงกัน! ลองใหม่\n";
-        return;
-    }
-
-    ofstream file("users.txt", ios::app);
-    file << username << " " << password << endl;
-    file.close();
-
-    cout << "✅ สมัครสมาชิกสำเร็จ!\n";
 }
 
 // ฟังก์ชันล็อกอิน
@@ -76,6 +79,7 @@ void homePage(string loggedInUser) {
         cout << "[4] Zone 2 🏢\n";
         cout << "[5] Zone 3 🏢\n";
         cout << "[0] Logout 🚪\n";
+        cout << "[9] Back ↩️\n"; // ปุ่มกลับไปหน้าเริ่มต้น
         cout << "เลือกเมนู: ";
         cin >> choice;
 
@@ -98,6 +102,8 @@ void homePage(string loggedInUser) {
             case 0:
                 cout << "🔴 ออกจากระบบ...\n";
                 return;
+            case 9:
+                return; // กลับไปหน้าเริ่มต้น
             default:
                 cout << "⚠️ กรุณาเลือกเมนูที่ถูกต้อง!\n";
         }
